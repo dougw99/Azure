@@ -1,0 +1,1 @@
+az deployment group create --what-if --resource-group demo-rg --template-file main.bicep
