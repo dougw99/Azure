@@ -12,8 +12,11 @@ param tags object ={
   projectName: appName
 }
 
+// deploy the modules as needed by setting the value to true
+param deploy_storage bool = false
+param deploy_kv bool = false
 
-module stgModule 'module/storage.bicep' = {
+module stgModule 'module/storage.bicep' = if (deploy_storage) {
   name: 'storageDeploy'
   scope: resourceGroup()
   params: {
@@ -26,7 +29,7 @@ module stgModule 'module/storage.bicep' = {
   }
 }
 
-module kvModule 'module/keyvault.bicep' = {
+module kvModule 'module/keyvault.bicep' = if (deploy_kv) {
   name: 'keyvaultDeploy'
   scope: resourceGroup()
   params: {
@@ -37,4 +40,4 @@ module kvModule 'module/keyvault.bicep' = {
 
 }
 
-output storageEndpoint object = stgModule.outputs.storageEndpoint
+
