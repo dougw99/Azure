@@ -16,7 +16,7 @@ param enablePurgeProtection bool = true
 @description('Optional: tags to attach to the Key Vault')
 param tags object = {}
 
-resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01-preview' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2024-11-01' = {
   name: keyVaultName
   location: location
   properties: {
@@ -30,13 +30,14 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01-preview' = {
 
     enableSoftDelete: enableSoftDelete
     softDeleteRetentionInDays: 90
-    purgeProtectionEnabled: enablePurgeProtection
+    enablePurgeProtection: true
 
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: networkSubnetId == '' ? 'Allow' : 'Deny'
       ipRules: []
-      virtualNetworkSubnets: networkSubnetId == '' ? [] : [
+      
+      virtualNetworkRules: networkSubnetId == '' ? [] : [
         {
           id: networkSubnetId
         }
